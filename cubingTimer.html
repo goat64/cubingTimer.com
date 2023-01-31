@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        * {
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        body {
+            max-height: 100vh;
+            max-width: 100vw;
+            margin: 0;
+            padding: 0;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .item1 {
+            grid-area: header;
+        }
+
+        .item2 {
+            grid-area: menu;
+        }
+
+        .item3 {
+            grid-area: main;
+        }
+
+        .item4 {
+            grid-area: right;
+            width:30vw;
+            height:10vh;
+            margin-left:5vw;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-areas:
+                'header header header header header header'
+                'menu main main main main right';
+            gap: 10px;
+            background-color: rgb(253, 255, 74);
+            padding: 10px;
+        }
+
+            .grid-container > div {
+                text-align: center;
+                padding: 20px 0;
+                font-size: 30px;
+            }
+
+        .item1 {
+            background-color: burlywood;
+            display: flex;
+        }
+
+        .scr {
+            font-size: 20px;
+        }
+
+        .item2 {
+            border: 2px solid black;
+            background-color: burlywood;
+            justify-content: center;
+            height: max-content;
+            width: 20vw;
+        }
+
+        .item3 {
+            height: 73vh;
+        }
+
+        .item4 {
+            align-items: center;
+            border: 2px solid black;
+            height: 35vh;
+            margin-top: 38vh;
+        }
+
+        .mid {
+            display: flex;
+        }
+
+        table {
+            height: 10vh;
+            width: 5vw;
+            border-collapse: collapse;
+        }
+
+            table + table {
+                margin-left: 0.5vw;
+            }
+
+        .w {
+            margin-bottom: 1vh;
+            margin-left: 5.5vw;
+        }
+
+        .y {
+            margin-top: 1vh;
+            margin-left: 5.5vw;
+        }
+
+        .container {
+            margin-right:5vw;
+            float: right;
+        }
+
+        .nextScr {
+            position: absolute;
+            margin-left: 60vw;
+            font-size: 10px;
+            background-color: burlywood;
+            border: none;
+            border-radius: 3px;
+            color: darkblue;
+        }
+
+            .nextScr:hover {
+                background-color: gray;
+            }
+
+        .timer {
+            font-size: 100px;
+            font-family: Impact;
+            margin-left:10vw;
+        }
+
+        .ins{
+            font-size:100px;
+        }
+
+        .times {
+            font-size: 15px;
+            width: max-content;
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        .times {
+            white-space: nowrap;
+            display: block;
+            max-width: 18vw;
+            height: 60vh;
+            overflow-x: auto;
+        }
+
+        .da {
+            font-size: 12px;
+            color: black;
+        }
+
+        .ao {
+            font-size: 35px;
+            color: blue;
+        }
+
+        .comment {
+            position: absolute;
+            background-color: white;
+            height: 30vh;
+            width: 30vw;
+            margin-left: 38vw;
+        }
+
+        .optContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .optBtn {
+            height: 4vh;
+            width: 3vw;
+        }
+
+        .settings {
+            height: 8vh;
+            width: 4vw;
+            background-color: #f3f321c7;
+            font-size: 40px;
+            border: 1px solid gray;
+            background-color: rgb(255, 255, 139);
+        }
+
+        .smenu {
+            margin-right: 20vw;
+            display: flex;
+            justify-content: center;
+        }
+
+        .sContainer {
+            display: flex;
+        }
+
+        .sOpt {
+            font-size: 10px;
+            height: 30vh;
+            width: 40vw;
+            justify-content: center;
+        }
+        .set {
+            position: absolute;
+            background-color: rgb(253, 181, 150);
+            box-shadow: 3px 3px gray;
+            display: none;
+        }
+        .timeInput{
+            height:20vh;
+            width:40vw;
+            background-color:rgba(255, 255, 196, 0.9);
+            border-radius: 3px;
+            font-size:70px;
+        }
+        .toolFun{
+            width:3vw;
+            height:1vh;
+        }
+    </style>
+    <body>
+
+        <div class="grid-container">
+            <div class="item1">
+                <div class="smenu">
+                    <button type="button" class="settings" id="settings"><i class="fa fa-gear" id="iconSet"></i></button>
+                    <button type="botton" id="isPress">CubePress</button>
+                </div>
+                <div class="sContainer">
+                    <h1 class="scr" id="scr"></h1>
+                    <button type="button" class="nextScr" id="nextScr">Next</button>
+                </div>
+            </div>
+            <div class="item2">
+                <center>
+                    <h1 class="da" id="mean"></h1>
+                    <h1 class="da" id="best"></h1>
+                    <button type="button" class="delAll" id="delAll">&#10006</button>
+                    <table border="1" class="times" id="times">
+                    </table>
+                </center>
+            </div>
+            <div class="item3">
+                <div class="comment" id="comment">
+
+                </div>
+                <div class="set" id="set">
+                    <center>
+                        <div class="sOpt">
+                            <h1 style="font-size:20px; display: inline-block;">
+                                inspection:<br />
+                                <select id="inspection">
+                                    <option value="never">never</option>
+                                    <option value="always">always</option>
+                                </select>
+                            </h1><br />
+                            <h1 style="font-size:20px; display: inline-block;">
+                                enter time with:<br />
+                                <select id="enterTime">
+                                    <option value="timer">timer</option>
+                                    <option value="input">input</option>
+                                </select>
+                            </h1>
+                        </div>
+                    </center>
+                </div>
+                <div id="enterTimer">
+                <div class="timer" id="timer">
+                    <span class="s" id="seconds" name="seconds">00</span>.
+                    <span class="tens" id="tens" name="tens">00</span>
+                    <h1 id="score" style="display:none;"></h1>
+                </div>
+                <div class="inspect" id="inspect">
+                    <span class="ins" id="ins"></span>
+                </div>
+            </div>
+            <div class="enterInput" id="enterInput">
+                <input type="input" class="timeInput" id="timeInput">
+            </div>
+                <h1 class="ao" id="ao5"></h1>
+                <h1 class="ao" id="ao16"></h1>
+            </div>
+            <div class="item4" id="item4">
+                <div class="container" id="container" style="display:none;">
+                    <table border="1" class="w" id="w">
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                    <div class="mid">
+                        <table border="1" class="t" id="o">
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                        <table border="1" class="t" id="g">
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                        <table border="1" class="t" id="r">
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                        <table border="1" class="t" id="b">
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <table border="1" class="y" id="y">
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="container2">
+                <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+                </div>
+                <select id="toolFun">
+                    <option value="draw scramble">draw scramble</option>
+                    <option value="graph">graph</option>
+                </select>
+            </div>
+        </div>
+
+
+
+
+
+
+        <script>
+
+
+
+            var isRun = false;
+            let seconds = 0;
+            let tens = 0;
+            let flag = true;
+            let getSeconds = document.getElementById("seconds");
+            let getTens = document.getElementById("tens");
+            var inverval;
+            var tItems = document.getElementById("timer");
+            
+
+
+            var isInspect=false;
+            var doIns=document.getElementById('inspection');
+            //doIns.value=localStorage.getItem("doIns");
+            var doInsValue = doIns.options[doIns.selectedIndex].text;
+
+            document.addEventListener('click',saveTimes);
+
+
+            function sS(e) {
+                if (enterTimeValue=="timer"){
+                    doInsValue = doIns.options[doIns.selectedIndex].text; 
+                        if (isInspect==true || doInsValue=="never"){
+                            if (e.code == "Space"){
+                                start();
+                                clearTimeout(inspection);
+                            }
+                        }  
+                        else{
+                            if (flag==true && isInspect==false){
+                                startI();
+                            }
+                        }
+                    if (flag == false) {
+                        stop();
+                    }
+                }
+            }
+            document.addEventListener('keypress', sS);
+
+            var score = document.getElementById('score');
+            function start() { // start the timer
+                isInspect=false;
+                insValue.style.display="none";
+                tItems.style.display="";
+                if (flag == true) {
+                    restart();
+                    inverval = setInterval(startTimer, 10);
+                }
+            }
+
+            function startI(){
+                insValue.style.display="";
+                tItems.style.display="none";
+                startInspect();
+            }
+
+            function stop() {
+                if (tens <= 9) {
+                    score.innerHTML = seconds + ".0" + tens;
+                }
+                else {
+                    score.innerHTML = seconds + "." + tens;
+                }
+                clearInterval(inverval);
+                flag = true;
+
+                insertByInput=false;
+                insertScore();
+                colc();
+                nScr();
+                tItems.style.color = "black";
+            }
+
+            function restart() {
+                let getSeconds = document.getElementById("seconds");
+                let getTens = document.getElementById("tens");
+                tens = 0;
+                seconds = 0;
+                getSeconds.innerHTML = seconds;
+                getTens.innerHTML = tens;
+
+            }
+            function startTimer() {
+                var getSeconds = document.getElementById("seconds");
+                var getTens = document.getElementById("tens");
+                tens = tens + 1;
+                if (tens <= 9) {
+                    getTens.innerHTML = '0' + tens;
+                }
+                if (tens > 9) {
+                    getTens.innerHTML = tens;
+                }
+                if (tens == 100) {
+                    seconds++;
+                    getSeconds.innerHTML = '0' + seconds;
+                    tens = 00;
+                    getTens.innerHTML = 00;
+                }
+                if (seconds > 9) {
+                    getSeconds.innerHTML = seconds;
+                }
+                flag = false;
+                tItems.style.color = "#ff0000";
+            }
+
+
+            var insTime = 15;
+            var insValue = document.getElementById("ins");
+            var isInspect = false;
+
+
+            var inspection;
+            function startInspect() {
+                    isInspect=true;
+                    insValue.style.display = "";
+                    insTime = 15;
+                    insValue.innerHTML = 15;
+                    clearTimeout(inspection);
+                    inspection = setInterval(inspecting, 1000);
+            }
+            function inspecting() {
+                insTime = insTime - 1;
+                if (insTime > 0) {
+                    insValue.innerHTML = insTime;
+                }
+                else {
+                    if (insTime > -2) {
+                        insValue.innerHTML = "+2";
+                    }
+                    else {
+                        insValue.innerHTML = "DNF";
+                    }
+                }
+            }
+
+
+            var enterTime=document.getElementById("enterTime");
+            enterTime.value=localStorage.getItem("enterTime");
+            enterTimeValue=enterTime.options[enterTime.selectedIndex].text;
+            document.addEventListener('click',inputWith);
+            var enterTimer=document.getElementById("enterTimer");
+            var enterInput=document.getElementById("enterInput");
+
+        
+            inputWith();
+            function inputWith(){
+                enterTimeValue=enterTime.options[enterTime.selectedIndex].text;
+                if (enterTimeValue=="timer"){
+                    enterTimer.style.display="";
+                    enterInput.style.display="none";
+                }
+                if (enterTimeValue=="input"){
+                    enterTimer.style.display="none";
+                    enterInput.style.display="";
+                }
+            }
+
+            var timeInput=document.getElementById('timeInput');
+            var inputValue;
+            var correctInput;
+            document.addEventListener('keypress',insertInput);
+            
+            var insertByInput=false;
+            function insertInput(e){
+                if (e.code=="Enter"){
+                    inputValue=timeInput.value;
+                    if (inputValue!=""){
+                        correctInput=isNaN(inputValue);
+                        if (correctInput==false){
+                            score.textContent=parseFloat(inputValue).toFixed(2);
+                            insertByInput=true;
+                            insertScore();
+                            timeInput.value="";
+                        }
+                        else{
+                            timeInput.value="";
+                        }
+                    }
+                }
+            }
+
+
+
+
+
+
+
+
+            var timesArray = [];
+
+            var mean = document.getElementById("mean");
+            var best = document.getElementById("best");
+            var ao5 = document.getElementById("ao5");
+            var ao16 = document.getElementById("ao16");
+
+            var times = document.getElementById("times");
+            var scramb = document.getElementById("scr");
+            var container = document.getElementById('container');
+            var conatiner2=document.getElementById("container2");
+            var isPress = document.getElementById('isPress');
+            var item4=document.getElementById("item4");
+
+            times.innerHTML = localStorage.getItem("times");
+
+
+            var toolFun=document.getElementById("toolFun");
+            toolFun.value=localStorage.getItem("toolFun");
+            var toolFunValue=toolFun.options[toolFun.selectedIndex].text;
+            document.addEventListener('click',toolF);
+            toolF();
+            function toolF(){
+                var toolFunValue=toolFun.options[toolFun.selectedIndex].text;
+                if (toolFunValue=="draw scramble"){
+                    container.style.display="";
+                    container2.style.display="none";
+                }
+                if (toolFunValue=="graph"){
+                    container2.style.display="";
+                    container.style.display="none";
+                }
+            }
+
+            function saveTimes() {
+                localStorage.setItem("times", times.innerHTML);
+                var doIns=document.getElementById('inspection');
+                var doInsValue = doIns.options[doIns.selectedIndex].text;
+                localStorage.setItem("doIns",doInsValue);
+                var enterTime=document.getElementById("enterTime");
+                var enterTimeValue=enterTime.options[enterTime.selectedIndex].text
+                localStorage.setItem("enterTime",enterTimeValue);
+                var toolFun=document.getElementById("toolFun");
+                var toolFunValue=toolFun.options[toolFun.selectedIndex].text;
+                localStorage.setItem("toolFun",toolFunValue);
+                colc();
+            }
+
+
+            timesArray = times.querySelectorAll('th');
+
+
+            if (timesArray.length != 0) {
+                colc();
+            }
+
+
+
+            var set = document.getElementById('set');
+            var settings = document.getElementById('settings');
+            var iconSet = document.getElementById('iconSet');
+            var innerSet = "";
+            document.addEventListener('click', function (e) {
+                innerSet = e.target;
+                for (var i = 0; i < 10; i++) {
+                    if (innerSet != set && innerSet.parentElement != null) {
+                        innerSet = innerSet.parentElement;
+                    }
+                }
+                set.style.display = "none";
+                if (e.target == iconSet || innerSet == set) {
+                    set.style.display = "flex";
+                }
+            })
+
+
+            var comment = document.getElementById("comment");
+            var innerComment = "";
+            var isComment = false;
+            comment.style.display = "none";
+            document.addEventListener('click', function (e) {
+                innerComment = e.target;
+                for (var i = 0; i < 10; i++) {
+                    if (innerComment != set && innerComment.parentElement != null) {
+                        innerComment = innerComment.parentElement;
+                    }
+                }
+                if (isComment == true) {
+                    comment.style.display = "none";
+                }
+                if (innerComment == set && isComment == true) {
+                    set.style.display = "flex";
+                }
+            });
+
+
+
+            document.addEventListener('click', removeClick);
+
+            function showOpt(e) {
+                var n = e.target.textContent;
+                presentOpt(n);
+            }
+            function removeClick() {
+                var nBtn = times.querySelectorAll("button");
+                nBtn.forEach(btn => {
+                    btn.addEventListener('click', showOpt);
+                });
+            }
+            function removeItem(e) {
+                const btn = e.target;
+                const par = btn.parentElement;
+                const timeElement = par.parentElement;
+                timeElement.remove();
+
+                colc();
+            }
+            
+            document.addEventListener("click",hideOpt);
+
+            var optPresent=false;
+            function hideOpt(e){
+                if (e.target!=comment){
+                    if (optPresent==false){
+                        comment.style.display = "none";
+                        optPresent=true;
+                    }
+                }
+            }
+            function presentOpt(n) {
+                optPresent=true;
+                setTimeout(() => {
+                    optPresent=false;
+                }, 100);
+                var num;
+                timesArray = times.querySelectorAll('th');
+                var numArray = times.querySelectorAll('button');
+                for (var i = 0; i < numArray.length; i++) {
+                    if (numArray[i].textContent == n) {
+                        num = i;
+                    }
+                }
+                comment.style.display = "";
+                var cText = `
+                <p>Solve number:${n}</p>
+                <span>${timesArray[num].textContent}</span>
+                <div class="optContainer">
+                <button type="button" class="optBtn" id="ok" onclick="okBtn(${n})">OK</button><button type="button" class="optBtn" id="plus2" onclick="plus2Btn(${n});">+2</button><button type="button" class="optBtn" id="dnf" onclick="dnfBtn(${n})">DNF</button><button type="button" class="optBtn" id="delEach" onclick="delBtn(${n})">&#10006</button>
+                </div>
+                `;
+                comment.innerHTML = cText;
+            }
+
+            function delBtn(n) {
+                var timesCol = times.querySelectorAll('tr');
+                timesCol.forEach(col => {
+                    if (col.querySelector('button').textContent == n) {
+                        col.remove();
+                    }
+                })
+                comment.style.display = "none";
+                saveTimes();
+            }
+
+            function plus2Btn(n) {
+                var timesCol = times.querySelectorAll('tr');
+                timesCol.forEach(col => {
+                    if (col.querySelector('button').textContent == n) {
+                        if (col.querySelector('th').textContent == col.querySelector('p').textContent) {
+                            col.querySelector('th').innerHTML = parseFloat(col.querySelector('th').textContent) + 2;
+                        }
+                    }
+                })
+                saveTimes();
+            }
+
+            function okBtn(n) {
+                var timesCol = times.querySelectorAll('tr');
+                timesCol.forEach(col => {
+                    if (col.querySelector('button').textContent == n) {
+                        col.querySelector('th').innerHTML = parseFloat(col.querySelector('p').textContent);
+                    }
+                })
+                saveTimes();
+            }
+
+            function dnfBtn(n) {
+                var timesCol = times.querySelectorAll('tr');
+                timesCol.forEach(col => {
+                    if (col.querySelector('button').textContent == n) {
+                        col.querySelector('th').innerHTML = "DNF";
+                    }
+                })
+                saveTimes();
+            }
+
+
+
+            var checkPress = false;
+            var cubePress = isPress.addEventListener('click', toPress);
+            function toPress() {
+                if (checkPress == true) {
+                    item4.style.display = "";
+                    checkPress = false;
+                }
+                else {
+                    item4.style.display = "none";
+                    checkPress = true;
+                }
+            }
+
+
+            function insertScore() {
+                timesArray = times.querySelectorAll('th');
+                var butArray = times.querySelectorAll('button');
+                var sNum = 1;
+                if (butArray.length == 0) {
+                    sNum = 1;
+                }
+                else {
+                    sNum = parseFloat(butArray[0].textContent) + 1;
+                }
+
+                if (insertByInput==false){
+                    if (insValue.innerHTML=="+2"){
+                        score.innerHTML=parseFloat(score.textContent)+2;
+                    }
+                    if (insValue.innerHTML=="DNF"){
+                        score.innerHTML="DNF";
+                    }
+                }
+                    var addToTable = `
+                <tr>
+                    <td><button type="button" class="delEach" id="delEach">${sNum}</button><td>
+                    <th>${score.textContent}</th>
+                    <td>${scramb.textContent}</td>
+                    <td style="display:none;"><p>${score.textContent}</p></td>
+                </tr>
+                `
+                times.innerHTML = addToTable + times.innerHTML;
+
+                saveTimes();
+
+                delEach = times.querySelectorAll('button');
+
+                insertChart();
+            }
+
+
+            var delAll = document.getElementById("delAll");
+            delAll.addEventListener('click', function () {
+                times.innerHTML = "";
+                localStorage.setItem("times", times.innerHTML);
+                colc();
+            })
+
+            function colc() {
+                mean.innerHTML = "";
+                best.innerHTML = "";
+                ao5.innerHTML = "";
+                ao16.innerHTML = "";
+                var timesArray = times.querySelectorAll('th');
+                var avg = 0;
+                var sum = 0;
+                var t5 = 0;
+                var t16 = 0;
+                var b5 = 0;
+                var w5 = 0;
+                var posB5 = 0;
+                var posW5 = 0;
+                var b16 = 0;
+                var w16 = 0;
+                var posB16 = 0;
+                var posW16 = 0;
+                if (timesArray.length != 0) {
+                    var countReal = 0;
+                    var b = timesArray[0].textContent;
+                    for (var i = 0; i < timesArray.length; i++) {
+                        if (timesArray[i].textContent != "DNF") {
+                            countReal++;
+                            sum = parseFloat(sum) + parseFloat(timesArray[i].textContent);
+                            if (timesArray[i].textContent < b) {
+                                b = timesArray[i].textContent;
+                            }
+                        }
+                    }
+                    if (timesArray.length >= 5) {
+                        var isDnf = false;
+                        b5 = timesArray[0].textContent;
+                        w5 = timesArray[0].textContent;
+                        posB5 = 0;
+                        posW5 = 0;
+                        for (var i = 0; i < 5; i++) {
+                            if (timesArray[i].textContent < b5) {
+                                b5 = timesArray[i].textContent;
+                                posB5 = i;
+                            }
+                            if (timesArray[i].textContent > w5 || timesArray[i].textContent == "DNF") {
+                                w5 = timesArray[i].textContent;
+                                posW5 = i;
+                            }
+                        }
+                        for (var i = 0; i < 5; i++) {
+                            if (i != posB5 && i != posW5) {
+                                if (timesArray[i].textContent == "DNF") {
+                                    isDnf = true;
+                                }
+                                t5 = parseFloat(t5) + parseFloat(timesArray[i].textContent);
+                            }
+                        }
+                        var avg5 = t5 / 3;
+                        ao5.innerHTML = "ao5: " + avg5.toFixed(2);
+                        if (isDnf == true) {
+                            ao5.innerHTML = "ao5: " + "DNF";
+                        }
+                    }
+                    if (timesArray.length >= 16) {
+                        var isDnf = false;
+                        b16 = timesArray[0].textContent;
+                        w16 = timesArray[0].textContent;
+                        posB16 = 0;
+                        posW16 = 0;
+                        for (var i = 0; i < 16; i++) {
+                            if (timesArray[i].textContent < b16) {
+                                b16 = timesArray[i].textContent;
+                                posB16 = i;
+                            }
+                            if (timesArray[i].textContent > w16 || timesArray[i].textContent == "DNF") {
+                                w16 = timesArray[i].textContent;
+                                posW16 = i;
+                            }
+                        }
+                        for (var i = 0; i < 16; i++) {
+                            if (i != posB16 && i != posW16) {
+                                if (timesArray[i].textContent == "DNF") {
+                                    isDnf = true;
+                                }
+                                t16 = parseFloat(t16) + parseFloat(timesArray[i].textContent);
+                            }
+                        }
+                        var avg16 = t16 / 14;
+                        ao16.innerHTML = "ao16: " + avg16.toFixed(2);
+                        if (isDnf == true) {
+                            ao16.innerHTML = "ao16: " + "DNF";
+                        }
+                    }
+                    avg = sum / countReal;
+                    mean.innerHTML = "mean:" + avg.toFixed(2);
+                    best.innerHTML = "best:" + b;
+                }
+            }
+
+
+
+
+            var tb = container.querySelectorAll('table');
+            var tr = 0;
+            var td = 0;
+
+
+            var white = [["white", "white", "white"], ["white", "white", "white"], ["white", "white", "white"]];
+            var orange = [["orange", "orange", "orange"], ["orange", "orange", "orange"], ["orange", "orange", "orange"]];
+            var green = [["green", "green", "green"], ["green", "green", "green"], ["green", "green", "green"]];
+            var red = [["red", "red", "red"], ["red", "red", "red"], ["red", "red", "red"]];
+            var blue = [["blue", "blue", "blue"], ["blue", "blue", "blue"], ["blue", "blue", "blue"]];
+            var yellow = [["yellow", "yellow", "yellow"], ["yellow", "yellow", "yellow"], ["yellow", "yellow", "yellow"]];
+
+            var all = [white, orange, green, red, blue, yellow];
+
+
+
+            var bi = 0;
+            var pre = 0;
+            var scr1 = "";
+
+            const scr = document.getElementById('scr');
+            const nextScr = document.getElementById('nextScr');
+            nextScr.addEventListener('click', nScr);
+
+            restartColors();
+            nScr();
+            doAction();
+
+            function setScr(scr) {// put the scramble in the tables
+                var flag = true;
+                flag = true;
+                if (scr == 'U' && flag == true) {
+                    U();
+                    flag = false;
+                }
+                if (scr == 'U`' && flag == true) {
+                    U();
+                    U();
+                    U();
+                    flag = false;
+                }
+                if (scr == 'U2' && flag == true) {
+                    U();
+                    U();
+                    flag = false;
+                }
+                if (scr == 'D' && flag == true) {
+                    D();
+                    flag = false;
+                }
+                if (scr == 'D`' && flag == true) {
+                    D();
+                    D();
+                    D();
+                    flag = false;
+                }
+                if (scr == 'D2' && flag == true) {
+                    D();
+                    D();
+                    flag = false;
+                }
+                if (scr == 'R' && flag == true) {
+                    R();
+                    flag = false;
+                }
+                if (scr == 'R`' && flag == true) {
+                    R();
+                    R();
+                    R();
+                    flag = false;
+                }
+                if (scr == 'R2' && flag == true) {
+                    R();
+                    R();
+                    flag = false;
+                }
+                if (scr == 'L' && flag == true) {
+                    L();
+                    flag = false;
+                }
+                if (scr == 'L`' && flag == true) {
+                    L();
+                    L();
+                    L();
+                    flag = false;
+                }
+                if (scr == 'L2' && flag == true) {
+                    L();
+                    L();
+                    flag = false;
+                }
+                if (scr == 'F' && flag == true) {
+                    F();
+                    flag = false;
+                }
+                if (scr == 'F`' && flag == true) {
+                    F();
+                    F();
+                    F();
+                    flag = false;
+                }
+                if (scr == 'F2' && flag == true) {
+                    F();
+                    F();
+                    flag = false;
+                }
+                if (scr == 'B' && flag == true) {
+                    B();
+                    flag = false;
+                }
+                if (scr == 'B`' && flag == true) {
+                    B();
+                    B();
+                    B();
+                    flag = false;
+                }
+                if (scr == 'B2' && flag == true) {
+                    B();
+                    B();
+                    flag = false;
+                }
+            }
+
+
+
+
+
+
+            function nScr() { // change the scramble
+                restartColors();
+
+                var num;
+                var y;
+                var n;
+                scr1 = "";
+                x = '';
+                check = 'a';
+                p = "";
+                for (var i = 0; i < 20; i++) {
+                    num = Math.floor(Math.random() * 6);
+                    n = Math.floor(Math.random() * 2);
+                    if (num == 0)
+                        x = 'R';
+                    if (num == 1)
+                        x = 'L';
+                    if (num == 2)
+                        x = 'U';
+                    if (num == 3)
+                        x = 'D';
+                    if (num == 4)
+                        x = 'F';
+                    if (num == 5)
+                        x = 'B';
+                    if (check != x) {
+                        y = Math.floor(Math.random() * 2) + 1;
+                        if (y == 1) {
+                            if (n == 0) {
+                                scr1 = scr1 + x;
+                                setScr(x);
+                            }
+                            else {
+                                scr1 = scr1 + x + "`";
+                                setScr(x + "`");
+                            }
+                        }
+                        else {
+                            scr1 = scr1 + x + y;
+                            setScr(x + "2");
+                        }
+                        if (i != 19) {
+                            scr1 = scr1 + " ";
+                        }
+                    }
+                    else {
+                        i = i - 1;
+                    }
+                    check = x;
+                }
+
+                scr.innerHTML = scr1;
+
+                all = [white, orange, green, red, blue, yellow];
+                doAction();
+
+            }
+
+
+
+            function restartColors() {
+                white = [["white", "white", "white"], ["white", "white", "white"], ["white", "white", "white"]];
+                orange = [["orange", "orange", "orange"], ["orange", "orange", "orange"], ["orange", "orange", "orange"]];
+                green = [["green", "green", "green"], ["green", "green", "green"], ["green", "green", "green"]];
+                red = [["red", "red", "red"], ["red", "red", "red"], ["red", "red", "red"]];
+                blue = [["blue", "blue", "blue"], ["blue", "blue", "blue"], ["blue", "blue", "blue"]];
+                yellow = [["yellow", "yellow", "yellow"], ["yellow", "yellow", "yellow"], ["yellow", "yellow", "yellow"]];
+
+                all = [white, orange, green, red, blue, yellow];
+            }
+
+
+            function doAction() {
+                for (var i = 0; i < tb.length; i++) {
+                    tr = tb[i].querySelectorAll('tr');
+                    for (var j = 0; j < tr.length; j++) {
+                        td = tr[j].querySelectorAll('td');
+                        for (var k = 0; k < td.length; k++) {
+                            td[k].style.backgroundColor = all[i][j][k];
+                        }
+                    }
+                }
+            }
+
+
+
+
+            function U() { //do U turn
+                pre = white[0][0];
+                white[0][0] = white[2][0];
+                white[2][0] = white[2][2];
+                white[2][2] = white[0][2];
+                white[0][2] = pre;
+
+                pre = white[0][1];
+                white[0][1] = white[1][0];
+                white[1][0] = white[2][1];
+                white[2][1] = white[1][2];
+                white[1][2] = pre;
+
+                for (var i = 0; i < 3; i++) {
+                    pre = orange[0][i];
+                    orange[0][i] = green[0][i];
+                    green[0][i] = red[0][i];
+                    red[0][i] = blue[0][i];
+                    blue[0][i] = pre;
+                }
+            }
+
+            function D() { //do D prime turn
+                pre = yellow[0][0];
+                yellow[0][0] = yellow[2][0];
+                yellow[2][0] = yellow[2][2];
+                yellow[2][2] = yellow[0][2];
+                yellow[0][2] = pre;
+
+                pre = yellow[0][1];
+                yellow[0][1] = yellow[1][0];
+                yellow[1][0] = yellow[2][1];
+                yellow[2][1] = yellow[1][2];
+                yellow[1][2] = pre;
+
+                for (var j = 0; j < 3; j++) {
+                    for (var i = 0; i < 3; i++) {
+                        pre = orange[2][i];
+                        orange[2][i] = green[2][i];
+                        green[2][i] = red[2][i];
+                        red[2][i] = blue[2][i];
+                        blue[2][i] = pre;
+                    }
+                }
+            }
+
+            function R() { //do R prime turn
+                pre = red[0][0];
+                red[0][0] = red[2][0];
+                red[2][0] = red[2][2];
+                red[2][2] = red[0][2];
+                red[0][2] = pre;
+
+                pre = red[0][1];
+                red[0][1] = red[1][0];
+                red[1][0] = red[2][1];
+                red[2][1] = red[1][2];
+                red[1][2] = pre;
+
+                for (var i = 0; i < 3; i++) {
+                    if (i == 0) {
+                        bi = 2;
+                    }
+                    if (i == 1) {
+                        bi = 1;
+                    }
+                    if (i == 2) {
+                        bi = 0;
+                    }
+                    pre = white[i][2];
+                    white[i][2] = green[i][2];
+                    green[i][2] = yellow[i][2];
+                    yellow[i][2] = blue[bi][0];
+                    blue[bi][0] = pre;
+                }
+            }
+
+            function L() { //do L prime turn
+                pre = orange[0][0];
+                orange[0][0] = orange[2][0];
+                orange[2][0] = orange[2][2];
+                orange[2][2] = orange[0][2];
+                orange[0][2] = pre;
+
+                pre = orange[0][1];
+                orange[0][1] = orange[1][0];
+                orange[1][0] = orange[2][1];
+                orange[2][1] = orange[1][2];
+                orange[1][2] = pre;
+
+                for (var i = 0; i < 3; i++) {
+                    if (i == 0) {
+                        bi = 2;
+                    }
+                    if (i == 1) {
+                        bi = 1;
+                    }
+                    if (i == 2) {
+                        bi = 0;
+                    }
+                    pre = white[i][0];
+                    white[i][0] = blue[bi][2];
+                    blue[bi][2] = yellow[i][0];
+                    yellow[i][0] = green[i][0];
+                    green[i][0] = pre;
+                }
+            }
+
+            function F() { //do F action
+                pre = green[0][0];
+                green[0][0] = green[2][0];
+                green[2][0] = green[2][2];
+                green[2][2] = green[0][2];
+                green[0][2] = pre;
+
+                pre = green[0][1];
+                green[0][1] = green[1][0];
+                green[1][0] = green[2][1];
+                green[2][1] = green[1][2];
+                green[1][2] = pre;
+
+
+                pre = white[2][0];
+                white[2][0] = orange[2][2];
+                orange[2][2] = yellow[0][2];
+                yellow[0][2] = red[0][0];
+                red[0][0] = pre;
+
+                pre = white[2][2];
+                white[2][2] = orange[0][2];
+                orange[0][2] = yellow[0][0];
+                yellow[0][0] = red[2][0];
+                red[2][0] = pre;
+
+                pre = white[2][1];
+                white[2][1] = orange[1][2];
+                orange[1][2] = yellow[0][1];
+                yellow[0][1] = red[1][0];
+                red[1][0] = pre;
+            }
+
+            function B() {//do B turn
+                pre = blue[0][0];
+                blue[0][0] = blue[2][0];
+                blue[2][0] = blue[2][2];
+                blue[2][2] = blue[0][2];
+                blue[0][2] = pre;
+
+                pre = blue[0][1];
+                blue[0][1] = blue[1][0];
+                blue[1][0] = blue[2][1];
+                blue[2][1] = blue[1][2];
+                blue[1][2] = pre;
+
+
+                pre = white[0][0];
+                white[0][0] = red[0][2];
+                red[0][2] = yellow[2][2];
+                yellow[2][2] = orange[2][0];
+                orange[2][0] = pre;
+
+                pre = white[0][2];
+                white[0][2] = red[2][2];
+                red[2][2] = yellow[2][0];
+                yellow[2][0] = orange[0][0];
+                orange[0][0] = pre;
+
+                pre = white[0][1];
+                white[0][1] = red[1][2];
+                red[1][2] = yellow[2][1];
+                yellow[2][1] = orange[1][0];
+                orange[1][0] = pre;
+            }
+
+
+
+
+
+
+        insertChart();
+        document.addEventListener('click',insertChart);
+        document.addEventListener('keypress',insertChart);
+
+        function insertChart(){
+            var timesArray=times.querySelectorAll('th');
+            var xValues=[];
+            var yValues=[];
+            var numS=1;
+            timesArray.forEach(time=>{
+                yValues.push(time.textContent);
+                xValues.push(numS);
+                numS++;
+            });
+
+            if (timesArray.length!=0){
+                var maxScore=parseFloat(timesArray[0].textContent);
+            }
+            else{
+                maxScore=60;
+            }
+            var j=yValues.length;
+            for (var i=0; i<yValues.length; i++){
+                    j--;
+                    yValues[i]=timesArray[j].textContent;
+                    if (parseFloat(timesArray[i].textContent)>maxScore){
+                        maxScore=parseFloat(timesArray[i].textContent);
+                    }
+            }
+
+            new Chart("myChart", {
+            type: "line",
+            data: {
+                labels: xValues,
+                datasets: [{
+                fill: false,
+                lineTension: 0,
+                backgroundColor: "rgba(0,0,255,1.0)",
+                borderColor: "rgba(0,0,255,0.1)",
+                data: yValues
+                }]
+            },
+            options: {
+            legend: {display: false},
+            scales: {
+                yAxes: [{ticks: {min: 0, max:maxScore}}],
+                }  
+            }
+            });
+        }
+        </script>
+
+    </body>
+</html>
